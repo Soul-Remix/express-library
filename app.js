@@ -3,6 +3,13 @@ const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
+// Set up mongoose connection
+const mongoose = require('mongoose');
+const MongoDb =
+  'mongodb+srv://soulRemix:bATtl9812@cluster0.vwxde.mongodb.net/express-library?retryWrites=true&w=majority';
+mongoose.connect(MongoDb, { useNewUrlParser: true, useUnifiedTopology: true });
+const db = mongoose.connection;
+db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
