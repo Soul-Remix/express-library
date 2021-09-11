@@ -1,7 +1,15 @@
 const BookInstance = require('../models/bookinstance');
 
-const bookinstance_list = function (req, res) {
-  res.send('Not Implemented yet');
+const bookinstance_list = async function (req, res, next) {
+  try {
+    const data = await BookInstance.find().populate('book');
+    res.render('bookinstance-list', {
+      title: 'Book Instance List',
+      data: data,
+    });
+  } catch (err) {
+    return next(err);
+  }
 };
 
 const bookinstance_detail = function (req, res) {
