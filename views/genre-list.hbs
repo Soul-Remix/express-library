@@ -1,0 +1,10 @@
+<h1>{{title}}</h1>
+{{#if data}}
+<ul>
+    {{#each data}}
+    <li><a href="{{this.url}}">{{this.name}}</a></li>
+    {{/each}}
+</ul>
+{{else}}
+<div>There are no genres.</div>
+{{/if}}

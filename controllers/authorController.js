@@ -1,7 +1,12 @@
 const Author = require('../models/author');
 
-const author_list = function (req, res) {
-  res.send('Not Implemented yet');
+const author_list = async function (req, res, next) {
+  try {
+    const data = await Author.find().sort([['family_name', 'ascending']]);
+    res.render('author-list', { title: 'Author List', data: data });
+  } catch (err) {
+    return next(err);
+  }
 };
 
 const author_detail = function (req, res) {
