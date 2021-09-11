@@ -8,10 +8,9 @@ require('dotenv').config();
 
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
+const catalogRouter = require('./routes/catalog');
 
 const app = express();
-
-const Author = require('./models/author');
 
 // Set up mongoose connection
 const MongoDb = process.env.MONGO_URL;
@@ -31,18 +30,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
-app.get('/author', (req, res) => {
-  const author = new Author({
-    first_name: 'fghfgh',
-    family_name: 'fghgfhfg',
-    date_of_birth: '1970',
-    date_of_death: '2000',
-  });
-  author
-    .save()
-    .then(() => console.log('request sent'))
-    .catch((err) => console.log(err));
-});
+app.use('/catalog', catalogRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
