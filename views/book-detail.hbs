@@ -1,0 +1,22 @@
+<h1>Title: {{data.title}}</h1>
+<p><strong>Author:</strong><a href={{data.author.url}}> {{data.author.name}}</a></p>
+<p><strong>Summary:</strong> {{data.summary}}</p>
+<p><strong>ISBN:</strong> {{data.isbn}}</p>
+<p><strong>Genre:</strong>
+<ul>
+    {{#each data.genre}}
+    <li>
+        <a href={{this.url}}>{{this.name}}</a>
+    </li>
+    {{/each}}
+</ul>
+</p>
+<div>
+    <h2>Copies</h2>
+    <hr>
+    {{#each instance}}
+    <span data-val="{{this.status}}">{{this.status}}</span>
+    <p><strong>Imprint:</strong>{{this.imprint}}</p>
+    <p><strong>ID:</strong><a href={{this.url}}>{{this._id}}</a></p>
+    {{/each}}
+</div>

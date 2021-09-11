@@ -37,8 +37,20 @@ const book_list = async function (req, res, next) {
   }
 };
 
-const book_detail = function (req, res) {
-  res.send('Not Implemented yet');
+const book_detail = async function (req, res, next) {
+  try {
+    const id = req.params.id;
+    const data = await Book.findById(id).populate('author').populate('genre');
+    const instance = await BookInstance.find({ book: id });
+    if (data.book === null) {
+      const err = new Error('Book not found');
+      err.status = 404;
+      return next(err);
+    }
+    res.render('book-detail', { title: 'Book Detail', data, instance });
+  } catch (err) {
+    return next(err);
+  }
 };
 
 const book_create_get = function (req, res) {
