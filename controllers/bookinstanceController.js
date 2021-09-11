@@ -12,8 +12,19 @@ const bookinstance_list = async function (req, res, next) {
   }
 };
 
-const bookinstance_detail = function (req, res) {
-  res.send('Not Implemented yet');
+const bookinstance_detail = async function (req, res, next) {
+  try {
+    const id = req.params.id;
+    const data = BookInstance.findById(id).populate('book');
+    if (!data) {
+      const err = new Error('Book copy not found');
+      err.status = 404;
+      return next(err);
+    }
+    res.render('bookinstance-detail', { title: 'Book Instance Detail', data });
+  } catch (err) {
+    return next(err);
+  }
 };
 
 const bookinstance_create_get = function (req, res) {
