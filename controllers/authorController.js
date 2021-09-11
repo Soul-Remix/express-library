@@ -1,4 +1,5 @@
 const Author = require('../models/author');
+const Book = require('../models/book');
 
 const author_list = async function (req, res, next) {
   try {
@@ -9,8 +10,20 @@ const author_list = async function (req, res, next) {
   }
 };
 
-const author_detail = function (req, res) {
-  res.send('Not Implemented yet');
+const author_detail = async function (req, res, next) {
+  try {
+    const id = req.params.id;
+    const data = await Author.findById(id);
+    if (!data) {
+      const err = new Error('Author not found');
+      err.status = 404;
+      return next(err);
+    }
+    const books = await Book.find({ author: id }, 'title summary');
+    res.render('author-list', { title: 'Author List', data, books });
+  } catch (err) {
+    return next(err);
+  }
 };
 
 const author_create_get = function (req, res) {

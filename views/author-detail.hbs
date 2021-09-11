@@ -1,0 +1,15 @@
+<h1>Author: {{data.name}}</h1>
+<p>{{data.date_of_birth}}  -  {{data.date_of_death}}</p>
+<div>
+    <h2>Books</h2>
+    {{#if books}}
+    <dl>
+        {{#each books}}
+        <dt><a href={{this.url}}>{{this.title}}</a></dt>
+        <dd>{{this.summary}}</dd>
+        {{/each}}
+    </dl>
+    {{else}}
+    <p>This author has no books</p>
+    {{/if}}
+</div>
