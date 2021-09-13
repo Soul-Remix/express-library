@@ -84,7 +84,7 @@ const author_delete_get = async function (req, res, next) {
     const author = await Author.findById(req.params.id);
     const books = await Book.find({ author: req.params.id });
     if (!author) {
-      res.redirect('catalog/author');
+      res.redirect('catalog/authors');
     } else {
       res.render('author-delete', { title: 'Delete Author', author, books });
     }
@@ -102,7 +102,7 @@ const author_delete_post = async function (req, res, next) {
       res.render('author-delete', { title: 'Delete Author', author, books });
     } else {
       await Author.findByIdAndDelete(id);
-      res.redirect('catalog/author');
+      res.redirect('/catalog/authors');
     }
   } catch (err) {
     return next(err);

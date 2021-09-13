@@ -17,7 +17,7 @@ const bookinstance_list = async function (req, res, next) {
 const bookinstance_detail = async function (req, res, next) {
   try {
     const id = req.params.id;
-    const data = BookInstance.findById(id).populate('book');
+    const data = await BookInstance.findById(id).populate('book');
     if (!data) {
       const err = new Error('Book copy not found');
       err.status = 404;
@@ -31,7 +31,7 @@ const bookinstance_detail = async function (req, res, next) {
 
 const bookinstance_create_get = async function (req, res, next) {
   try {
-    const books = await Book.find({}, 'title');
+    const books = await Book.find();
     res.render('bookinstance-form', { title: 'Create BookInstance', books });
   } catch (err) {
     return next(err);
@@ -46,7 +46,7 @@ const bookinstance_create_post = [
     .escape()
     .withMessage('Imprint is required'),
   body('status')
-    .isIn('Available', 'Maintenance', 'Loaned', 'Reserved')
+    .isIn(['Available', 'Maintenance', 'Loaned', 'Reserved'])
     .withMessage('Please choose a status')
     .escape(),
   body('due_back', 'Invalid date')
@@ -83,9 +83,9 @@ const bookinstance_create_post = [
 const bookinstance_delete_get = async function (req, res, next) {
   try {
     const id = req.params.id;
-    const bookinstance = BookInstance.findById(id);
+    const bookinstance = await BookInstance.findById(id);
     if (!bookinstance) {
-      res.redirect('catalog/bookinstances');
+      res.redirect('/catalog/bookinstances');
     } else {
       res.render('bookinstance-delete', {
         title: 'Delete BookInstance',
@@ -100,12 +100,12 @@ const bookinstance_delete_get = async function (req, res, next) {
 const bookinstance_delete_post = async function (req, res, next) {
   try {
     const id = req.params.id;
-    const bookinstance = BookInstance.findById(id);
+    const bookinstance = await BookInstance.findById(id);
     if (!bookinstance) {
-      res.redirect('catalog/bookinstances');
+      res.redirect('/catalog/bookinstances');
     } else {
       await BookInstance.findByIdAndDelete(id);
-      res.redirect('catalog/bookinstances');
+      res.redirect('/catalog/bookinstances');
     }
   } catch (err) {
     return next(err);

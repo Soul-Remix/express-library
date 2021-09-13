@@ -66,7 +66,7 @@ const genre_delete_get = async function (req, res, next) {
     const genre = await Genre.findById(id);
     const books = await Book.find({ genre: id });
     if (!genre) {
-      res.redirect('catalog/genre');
+      res.redirect('/catalog/genres');
     } else {
       res.render('genre-delete', { title: 'Delete genre', genre, books });
     }
@@ -84,7 +84,7 @@ const genre_delete_post = async function (req, res, next) {
       res.render('genre-delete', { title: 'Delete genre', genre, books });
     } else {
       await Genre.findByIdAndDelete(id);
-      res.redirect('catalog/genre');
+      res.redirect('/catalog/genres');
     }
   } catch (err) {
     return next(err);

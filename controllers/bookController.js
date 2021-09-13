@@ -114,7 +114,7 @@ const book_delete_get = async function (req, res, next) {
     const book = await Book.findById(id);
     const bookinstance = await BookInstance.find({ book: id });
     if (!book) {
-      res.redirect('catalog/books');
+      res.redirect('/catalog/books');
     } else {
       res.render('book-delete', { title: 'Delete book', book, bookinstance });
     }
@@ -132,7 +132,7 @@ const book_delete_post = async function (req, res, next) {
       res.render('book-delete', { title: 'Delete book', book, bookinstance });
     } else {
       await Book.findByIdAndDelete(id);
-      res.redirect('catalog/books');
+      res.redirect('/catalog/books');
     }
   } catch (err) {
     return next(err);

@@ -2,7 +2,7 @@
 <form action="" method="POST">
     <label for="book">Book</label>
     <select name="book" id="book" required>
-        {{#each book}}
+        {{#each books}}
         <option value={{this._id}}>{{this.title}}</option>
         {{/each}}
     </select>
