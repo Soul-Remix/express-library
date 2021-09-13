@@ -1,0 +1,36 @@
+<h1>{{title}}</h1>
+<hr>
+<form action="" method="POST">
+    <label for="title">Title</label>
+    <input type="text" id="title" name="title" required placeholder="Name of the book" value={{#if book.title}} {{book.title}}
+        {{else}} "" {{/if}}>
+    <label for="author">Author</label>
+    <select name="author" id="author" required >
+        {{#each author}}
+        <option value={{this._id}}>{{this.name}}</option>
+        {{/each}}
+    </select>
+    <label for="summary">Summary</label>
+    <textarea name="summary" id="summary" cols="30" rows="10" required placeholder="Enter book summary">
+        {{#if book.summary}}
+        {{book.summary}}
+        {{/if}}
+    </textarea>
+    <label for="isbn">ISBN</label>
+    <input type="text" id="isbn" name="isbn" placeholder="ISBN" required value={{#if book.isbn}} {{book.isbn}} {{else}} '' {{}}>
+    <label>Genre</label>
+    <div>
+        {{#each genre}}
+        <input type="checkbox" name={{this.name}} id={{this._id}}>
+        <label for={{this._id}}></label>
+        {{/each}}
+    </div>
+</form>
+
+{{#if errors}}
+<ul>
+    {{#each errors}}
+    <li>this.msg</li>
+    {{/each}}
+</ul>
+{{/if}}

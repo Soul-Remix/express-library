@@ -2,7 +2,7 @@ const Book = require('../models/book');
 const Author = require('../models/author');
 const Genre = require('../models/genre');
 const BookInstance = require('../models/bookinstance');
-const { NotExtended } = require('http-errors');
+const { body, validationResult } = require('express-validator');
 
 const index = async function (req, res, next) {
   try {
@@ -53,13 +53,60 @@ const book_detail = async function (req, res, next) {
   }
 };
 
-const book_create_get = function (req, res) {
-  res.send('Not Implemented yet');
+const book_create_get = async function (req, res, next) {
+  try {
+    const author = await Author.find();
+    const genre = await Genre.find();
+    res.render('book-form', { title: 'Create Book', author, genre });
+  } catch (err) {
+    return next(err);
+  }
 };
 
-const book_create_post = function (req, res) {
-  res.send('Not Implemented yet');
-};
+const book_create_post = [
+  body('title')
+    .trim()
+    .isLength({ min: 1 })
+    .escape()
+    .withMessage('Title must not be empty'),
+  body('author')
+    .trim()
+    .isLength({ min: 1 })
+    .escape()
+    .withMessage('Author must not be empty'),
+  body('summary')
+    .trim()
+    .isLength({ min: 1 })
+    .escape()
+    .withMessage('Summary must not be empty'),
+  body('isbn')
+    .trim()
+    .isLength({ min: 1 })
+    .escape()
+    .withMessage('ISBN must not be empty'),
+  async (req, res, next) => {
+    try {
+      const errors = validationResult(req);
+      const book = new Book({
+        title: req.body.title,
+        summary: req.body.summary,
+        author: req.body.author,
+        isbn: req.body.isbn,
+        genre: req.body.genre,
+      });
+      if (!errors.isEmpty()) {
+        const author = await Author.find();
+        const genre = await Genre.find();
+        res.render('book-form', { title: 'Create Book', author, genre, book });
+      } else {
+        await book.save();
+        res.redirect(book.url);
+      }
+    } catch (err) {
+      return next(err);
+    }
+  },
+];
 
 const book_delete_get = function (req, res) {
   res.send('Not Implemented yet');
