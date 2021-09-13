@@ -60,12 +60,35 @@ const genre_create_post = [
   },
 ];
 
-const genre_delete_get = function (req, res) {
-  res.send('Not Implemented yet');
+const genre_delete_get = async function (req, res, next) {
+  try {
+    const id = req.params.id;
+    const genre = await Genre.findById(id);
+    const books = await Book.find({ genre: id });
+    if (!genre) {
+      res.redirect('catalog/genre');
+    } else {
+      res.render('genre-delete', { title: 'Delete genre', genre, books });
+    }
+  } catch (err) {
+    return next(err);
+  }
 };
 
-const genre_delete_post = function (req, res) {
-  res.send('Not Implemented yet');
+const genre_delete_post = async function (req, res, next) {
+  try {
+    const id = req.params.id;
+    const genre = await Genre.findById(id);
+    const books = await Book.find({ genre: id });
+    if (books.length) {
+      res.render('genre-delete', { title: 'Delete genre', genre, books });
+    } else {
+      await Genre.findByIdAndDelete(id);
+      res.redirect('catalog/genre');
+    }
+  } catch (err) {
+    return next(err);
+  }
 };
 
 const genre_update_get = function (req, res) {

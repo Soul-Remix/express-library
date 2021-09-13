@@ -108,12 +108,35 @@ const book_create_post = [
   },
 ];
 
-const book_delete_get = function (req, res) {
-  res.send('Not Implemented yet');
+const book_delete_get = async function (req, res, next) {
+  try {
+    const id = req.params.id;
+    const book = await Book.findById(id);
+    const bookinstance = await BookInstance.find({ book: id });
+    if (!book) {
+      res.redirect('catalog/books');
+    } else {
+      res.render('book-delete', { title: 'Delete book', book, bookinstance });
+    }
+  } catch (err) {
+    return next(err);
+  }
 };
 
-const book_delete_post = function (req, res) {
-  res.send('Not Implemented yet');
+const book_delete_post = async function (req, res, next) {
+  try {
+    const id = req.params.id;
+    const book = await Book.findById(id);
+    const bookinstance = await BookInstance.find({ book: id });
+    if (bookinstance.length > 0) {
+      res.render('book-delete', { title: 'Delete book', book, bookinstance });
+    } else {
+      await Book.findByIdAndDelete(id);
+      res.redirect('catalog/books');
+    }
+  } catch (err) {
+    return next(err);
+  }
 };
 
 const book_update_get = function (req, res) {

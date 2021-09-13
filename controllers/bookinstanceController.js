@@ -80,12 +80,36 @@ const bookinstance_create_post = [
   },
 ];
 
-const bookinstance_delete_get = function (req, res) {
-  res.send('Not Implemented yet');
+const bookinstance_delete_get = async function (req, res, next) {
+  try {
+    const id = req.params.id;
+    const bookinstance = BookInstance.findById(id);
+    if (!bookinstance) {
+      res.redirect('catalog/bookinstances');
+    } else {
+      res.render('bookinstance-delete', {
+        title: 'Delete BookInstance',
+        bookinstance,
+      });
+    }
+  } catch (err) {
+    return next(err);
+  }
 };
 
-const bookinstance_delete_post = function (req, res) {
-  res.send('Not Implemented yet');
+const bookinstance_delete_post = async function (req, res, next) {
+  try {
+    const id = req.params.id;
+    const bookinstance = BookInstance.findById(id);
+    if (!bookinstance) {
+      res.redirect('catalog/bookinstances');
+    } else {
+      await BookInstance.findByIdAndDelete(id);
+      res.redirect('catalog/bookinstances');
+    }
+  } catch (err) {
+    return next(err);
+  }
 };
 
 const bookinstance_update_get = function (req, res) {

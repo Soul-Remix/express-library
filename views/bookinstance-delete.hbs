@@ -1,0 +1,9 @@
+<h1>{{title}}</h1>
+
+
+<p>Do you really want to delete this Book Instance</p>
+<p>{{bookinstance.imprint}}</p>
+<form action="" method="POST">
+    <input type="hidden" name='bookinstanceid' required value={{bookinstance._id}}>
+    <button type="submit">Delete</button>
+</form>
