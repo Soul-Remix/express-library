@@ -70,7 +70,7 @@ const author_create_post = [
           date_of_birth: req.body.date_of_birth,
           date_of_death: req.body.date_of_death,
         });
-        await Author.save();
+        await author.save();
         res.redirect(author.url);
       } catch (err) {
         return next(err);

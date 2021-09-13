@@ -177,3 +177,37 @@ nav ul li ul:hover {
 main {
   padding: 25px;
 }
+
+form {
+  display: flex;
+  flex-flow: column wrap;
+  gap: 15px;
+  font-size: 1.1rem;
+}
+
+form input {
+  font-size: 1.1rem;
+  padding: 8px;
+  border-radius: 5px;
+  border: 1px solid #374151;
+}
+
+form button {
+  align-self: center;
+  margin-top: 25px;
+  padding: 10px 15px;
+  font-size: 1.2rem;
+  cursor: pointer;
+  background: #374151;
+  color: white;
+  border-radius: 10px;
+  border: 1px transparent;
+}
+
+form button:hover {
+  background: #34d399;
+}
+
+span[data-val='Available'] {
+  color: green;
+}
