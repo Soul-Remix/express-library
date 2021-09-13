@@ -64,6 +64,13 @@ const book_create_get = async function (req, res, next) {
 };
 
 const book_create_post = [
+  (req, res, next) => {
+    if (!(req.body.genre instanceof Array)) {
+      if (typeof req.body.genre === 'undefined') req.body.genre = [];
+      else req.body.genre = new Array(req.body.genre);
+    }
+    next();
+  },
   body('title')
     .trim()
     .isLength({ min: 1 })
@@ -84,6 +91,7 @@ const book_create_post = [
     .isLength({ min: 1 })
     .escape()
     .withMessage('ISBN must not be empty'),
+  body('genre.*').escape(),
   async (req, res, next) => {
     try {
       const errors = validationResult(req);
@@ -150,13 +158,6 @@ const book_update_get = async function (req, res) {
       err.status = 404;
       return next(err);
     } else {
-      for (let i = 0; i < genre.length; i++) {
-        for (let j = 0; j < book.genre.length; j++) {
-          if (genre[i]._id.toString() === book.genre[j]._id.toString()) {
-            genre[i].checked = 'true';
-          }
-        }
-      }
       res.render('book-form', { title: 'Update Book', book, author, genre });
     }
   } catch (err) {

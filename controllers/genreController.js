@@ -91,13 +91,46 @@ const genre_delete_post = async function (req, res, next) {
   }
 };
 
-const genre_update_get = function (req, res) {
-  res.send('Not Implemented yet');
+const genre_update_get = async function (req, res, next) {
+  try {
+    const id = req.params.id;
+    const genre = await Genre.findById(id);
+    if (!genre) {
+      const err = new Error('Genre not found');
+      err.status = 400;
+      next(err);
+    } else {
+      res.render('genre-form', genre);
+    }
+  } catch (err) {
+    return next(err);
+  }
 };
 
-const genre_update_post = function (req, res) {
-  res.send('Not Implemented yet');
-};
+const genre_update_post = [
+  body('name')
+    .trim()
+    .isLength({ min: 1 })
+    .escape()
+    .withMessage('Genre name is required'),
+  async (req, res, next) => {
+    errors = validationResult(req);
+    const genre = new Genre({
+      name: req.body.name,
+      _id: req.params.id,
+    });
+    if (!errors.isEmpty()) {
+      res.render('genre-form', {
+        title: 'Update Genre',
+        genre,
+        errors: errors.array(),
+      });
+    } else {
+      await Genre.findByIdAndUpdate(req.params.id, genre);
+      res.redirect(genre.url);
+    }
+  },
+];
 
 module.exports = {
   genre_list,

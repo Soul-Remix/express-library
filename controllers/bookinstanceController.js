@@ -1,6 +1,7 @@
 const BookInstance = require('../models/bookinstance');
 const Book = require('../models/book');
 const { body, validationResult } = require('express-validator');
+const book = require('../models/book');
 
 const bookinstance_list = async function (req, res, next) {
   try {
@@ -112,13 +113,73 @@ const bookinstance_delete_post = async function (req, res, next) {
   }
 };
 
-const bookinstance_update_get = function (req, res) {
-  res.send('Not Implemented yet');
+const bookinstance_update_get = async function (req, res, next) {
+  try {
+    const id = req.params.id;
+    const bookinstance = await BookInstance.findById(id);
+    const books = await Book.find();
+    if (!bookinstance) {
+      const err = new Error('Author not found');
+      err.status = 400;
+      res.next(err);
+    } else {
+      res.render('bookinstance-form', {
+        title: 'Update BookInstance',
+        bookinstance,
+        books,
+      });
+    }
+  } catch (err) {
+    return next(err);
+  }
 };
 
-const bookinstance_update_post = function (req, res) {
-  res.send('Not Implemented yet');
-};
+const bookinstance_update_post = [
+  body('book')
+    .trim()
+    .isLength({ min: 1 })
+    .escape()
+    .withMessage('Book is required'),
+  body('imprint')
+    .trim()
+    .isLength({ min: 1 })
+    .escape()
+    .withMessage('Imprint is required'),
+  body('status')
+    .isIn(['Available', 'Maintenance', 'Loaned', 'Reserved'])
+    .withMessage('Please choose a status')
+    .escape(),
+  body('due_back', 'Invalid date')
+    .optional({ checkFalsy: true })
+    .isISO8601()
+    .toDate(),
+  async (req, res, next) => {
+    try {
+      const errors = validationResult(req);
+      const books = await Book.find();
+      const bookinstance = new BookInstance({
+        book: req.body.params,
+        imprint: req.body.imprint,
+        status: req.body.status,
+        due_back: req.body.due_back,
+        _id: req.params.id,
+      });
+      if (!errors.isEmpty()) {
+        res.render('bookinstance-form', {
+          title: 'Update BookInstance',
+          bookinstance,
+          books,
+          errors: errors.array(),
+        });
+      } else {
+        await BookInstance.findByIdAndUpdate(req.params.id, bookinstance);
+        res.redirect(bookinstance.url);
+      }
+    } catch (err) {
+      return next(err);
+    }
+  },
+];
 
 module.exports = {
   bookinstance_list,
