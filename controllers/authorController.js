@@ -79,12 +79,34 @@ const author_create_post = [
   },
 ];
 
-const author_delete_get = function (req, res) {
-  res.send('Not Implemented yet');
+const author_delete_get = async function (req, res, next) {
+  try {
+    const author = await Author.findById(req.params.id);
+    const books = await Book.find({ author: req.params.id });
+    if (!author) {
+      res.redirect('catalog/author');
+    } else {
+      res.render('author-delete', { title: 'Delete Author', author, books });
+    }
+  } catch (err) {
+    return next(err);
+  }
 };
 
-const author_delete_post = function (req, res) {
-  res.send('Not Implemented yet');
+const author_delete_post = async function (req, res, next) {
+  try {
+    const id = req.params.id;
+    const author = await Author.findById(id);
+    const books = await Book.find({ author: id });
+    if (books.length > 0) {
+      res.render('author-delete', { title: 'Delete Author', author, books });
+    } else {
+      await Author.findByIdAndDelete(id);
+      res.redirect('catalog/author');
+    }
+  } catch (err) {
+    return next(err);
+  }
 };
 
 const author_update_get = function (req, res) {
