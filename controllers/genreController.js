@@ -50,7 +50,7 @@ const genre_create_post = [
         if (found) {
           res.redirect(found.url);
         } else {
-          Genre.save();
+          await Genre.save();
           res.redirect(genre.url);
         }
       } catch (err) {
