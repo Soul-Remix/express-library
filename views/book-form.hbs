@@ -17,14 +17,15 @@
         {{/if}}
     </textarea>
     <label for="isbn">ISBN</label>
-    <input type="text" id="isbn" name="isbn" placeholder="ISBN" required value={{#if book.isbn}} {{book.isbn}} {{else}} '' {{}}>
+    <input type="text" id="isbn" name="isbn" placeholder="ISBN" required value={{#if book.isbn}} {{book.isbn}} {{else}} '' {{/if}}>
     <label>Genre</label>
     <div>
         {{#each genre}}
-        <input type="checkbox" name={{this.name}} id={{this._id}}>
-        <label for={{this._id}}></label>
+        <input type="checkbox" name={{this.name}} id={{this._id}} value={{this._id}}>
+        <label for={{this._id}}>{{this.name}}</label>
         {{/each}}
     </div>
+    <button type="submit">Submit</button>
 </form>
 
 {{#if errors}}

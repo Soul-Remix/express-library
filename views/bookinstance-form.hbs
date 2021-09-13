@@ -1,0 +1,29 @@
+<h1>{{title}}</h1>
+<form action="" method="POST">
+    <label for="book">Book</label>
+    <select name="book" id="book" required>
+        {{#each book}}
+        <option value={{this._id}}>{{this.title}}</option>
+        {{/each}}
+    </select>
+    <label for="imprint">Imprint</label>
+    <input type="text" name="imprint" id="imprint" placeholder="Enter book imprint" required value={{#if bookinstance}} {{bookinstance.imprint}} {{else}} '' {{/if}}>
+    <label for="due-back">Date when book available:</label>
+    <input type="date" name="due_back" id="due-back" value={{#if bookinstance.due_back}} {{bookinstance.due_back}} {{/if}}>
+    <label for="status">Book status</label>
+    <select name="status" id="status">
+        <option value="Maintenance">Maintenance</option>
+        <option value="Available">Available</option>
+        <option value="Loaned">Loaned</option>
+        <option value="Reserved">Reserved</option>
+    </select>
+    <button type="submit">Submit</button>
+</form>
+
+{{#if errors}}
+<ul>
+    {{#each errors}}
+    <li>{{this.msg}}</li>
+    {{/each}}
+</ul>
+{{/if}}

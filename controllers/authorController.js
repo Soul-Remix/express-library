@@ -21,7 +21,7 @@ const author_detail = async function (req, res, next) {
       return next(err);
     }
     const books = await Book.find({ author: id }, 'title summary');
-    res.render('author-list', { title: 'Author List', data, books });
+    res.render('author-detail', { title: 'Author List', data, books });
   } catch (err) {
     return next(err);
   }
