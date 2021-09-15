@@ -211,3 +211,11 @@ form button:hover {
 span[data-val='Available'] {
   color: green;
 }
+
+span[data-val='Maintenance'] {
+  color: red;
+}
+
+span[data-val='Loaned'] {
+  color: blue;
+}

@@ -1,11 +1,11 @@
 <h1>{{title}}</h1>
 <hr>
 <form action="" method="POST">
-    <label for="author-first-name">*First Name:</label>
-    <input type="text" id="author-first-name" name="first_name" placeholder="Author first name" value={{#if author.first_name}} {{author.first_name}}
+    <label for="author-first-name">First Name*:</label>
+    <input type="text" id="author-first-name" name="first_name" placeholder="Author first name" required value={{#if author.first_name}} {{author.first_name}}
         {{else}} "" {{/if}}>
-    <label for="author-family-name">*Family Name:</label>
-    <input type="text" id="author-family-name" name="family_name" placeholder="Author family name" value={{#if
+    <label for="author-family-name">Family Name*:</label>
+    <input type="text" id="author-family-name" name="family_name" placeholder="Author family name" required value={{#if
         author.family_name}} {{author.family_name}} {{else}} "" {{/if}}>
     <label for="author-birth">Date Of Birth</label>
     <input type="date" id="author-birth" name="date_of_birth" value={{#if author.date_of_birth}} {{author.date_of_birth}}

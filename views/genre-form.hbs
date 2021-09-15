@@ -1,8 +1,8 @@
 <h1>{{title}}</h1>
 <hr>
 <form action="" method="POST">
-    <label for="genre-name">Genre</label>
-    <input type="text" id="genre-name" name="name" placeholder="Fantasy, Poetry etc." value={{#if genre}} {{genre.name}} {{else}} "" {{/if}}>
+    <label for="genre-name">Genre*:</label>
+    <input type="text" id="genre-name" name="name" placeholder="Fantasy, Poetry etc." value={{#if genre}} {{genre.name}} {{else}} "" {{/if}} required>
     <button type="submit">Submit</button>
 </form>
 
